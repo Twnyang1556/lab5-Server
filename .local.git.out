@@ -16,3 +16,8 @@ Your branch is up to date with 'origin/master'.
 M	include/server.hh
 M	src/server.cc
 Your branch is up to date with 'origin/master'.
+[master 499aa9c] Commit at 10:50:35 PM
+ 3 files changed, 42 insertions(+), 37 deletions(-)
+ rewrite include/server.hh (86%)
+M	.local.git.out
+Your branch is up to date with 'origin/master'.
