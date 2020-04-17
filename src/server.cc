@@ -16,24 +16,29 @@
 #include "misc.hh"
 #include "routes.hh"
 
-Server::Server(SocketAcceptor const& acceptor) : _acceptor(acceptor) { }
+Server::Server(SocketAcceptor const &acceptor) : _acceptor(acceptor) {}
 
-void Server::run_linear() const {
-  while (1) {
+void Server::run_linear() const
+{
+  while (1)
+  {
     Socket_t sock = _acceptor.accept_connection();
     handle(sock);
   }
 }
 
-void Server::run_fork() const {
+void Server::run_fork() const
+{
   // TODO: Task 1.4
 }
 
-void Server::run_thread() const {
+void Server::run_thread() const
+{
   // TODO: Task 1.4
 }
 
-void Server::run_thread_pool(const int num_threads) const {
+void Server::run_thread_pool(const int num_threads) const
+{
   // TODO: Task 1.4
 }
 
@@ -48,11 +53,12 @@ std::vector<Route_t> route_map = {
 };
 */
 
-void Server::handle(const Socket_t& sock) const {
+void Server::handle(const Socket_t &sock) const
+{
   HttpRequest request;
   // TODO: implement parsing HTTP requests
   // recommendation:
-  // void parse_request(const Socket_t& sock, HttpRequest* const request);
+  parse_request(sock, &request);
   request.print();
 
   HttpResponse resp;
@@ -60,4 +66,24 @@ void Server::handle(const Socket_t& sock) const {
   resp.http_version = "HTTP/1.1";
   std::cout << resp.to_string() << std::endl;
   sock->write(resp.to_string());
+}
+
+void parse_request(const Socket_t &sock, HttpRequest *const request)
+{
+  std::string input = sock->readline();
+  std::vector<std::string> res;
+  std::istringstream iss(input);
+  for (std::string input; iss >> input;)
+  {
+    /* code */
+    res.push_back(input);
+  }
+  for (int i = 0; i < res.size(); i++)
+  {
+    /* code */
+    sock->write(res[i] + "\r\n");
+  }
+  request->method = res[0];
+  request->request_uri = res[1];
+  request->http_version = res[2];
 }
