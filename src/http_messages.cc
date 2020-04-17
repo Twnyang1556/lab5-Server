@@ -23,6 +23,11 @@ std::string HttpResponse::to_string() const
         s = it->second;
     }
     ss << http_version << " " << status_code + " " << s + "\r\n";
+    ss << "Headers:\r\n";
+    for (auto kvp = headers.begin(); kvp != headers.end(); kvp++)
+    {
+        ss << "field-name: " << kvp->first << "; field-value: " << kvp->second;
+    }
     ss << "Connection: close\r\n";
     ss << "Content-Length: 12\r\n";
     ss << "\r\n";
