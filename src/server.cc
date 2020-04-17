@@ -58,18 +58,7 @@ void Server::handle(const Socket_t &sock) const
   HttpRequest request;
   // TODO: implement parsing HTTP requests
   // recommendation:
-  parse_request(sock, &request);
-  request.print();
-
-  HttpResponse resp;
-  // TODO: Make a response for the HTTP request
-  resp.http_version = "HTTP/1.1";
-  std::cout << resp.to_string() << std::endl;
-  sock->write(resp.to_string());
-}
-
-void parse_request(const Socket_t &sock, HttpRequest *const request)
-{
+  // parse_request(sock, &request);
   std::string input = sock->readline();
   std::vector<std::string> res;
   std::istringstream iss(input);
@@ -83,7 +72,19 @@ void parse_request(const Socket_t &sock, HttpRequest *const request)
     /* code */
     sock->write(res[i] + "\r\n");
   }
-  request->method = res[0];
-  request->request_uri = res[1];
-  request->http_version = res[2];
+  request.method = res[0];
+  request.request_uri = res[1];
+  request.http_version = res[2];
+  request.print();
+
+  HttpResponse resp;
+  // TODO: Make a response for the HTTP request
+  resp.http_version = "HTTP/1.1";
+  std::cout << resp.to_string() << std::endl;
+  sock->write(resp.to_string());
 }
+
+// void parse_request(const Socket_t &sock, HttpRequest *const request)
+// {
+
+// }
