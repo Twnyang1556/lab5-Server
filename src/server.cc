@@ -76,12 +76,15 @@ void Server::handle(const Socket_t &sock) const
   request.request_uri = res[1];
   request.http_version = res[2];
   request.print();
-
   HttpResponse resp;
+  if (request.request_uri.compare("/hello"))
+  {
+    sock->write(resp.to_string());
+  }
+
   // TODO: Make a response for the HTTP request
   resp.http_version = "HTTP/1.1";
   std::cout << resp.to_string() << std::endl;
-  sock->write(resp.to_string());
 }
 
 // void parse_request(const Socket_t &sock, HttpRequest *const request)
