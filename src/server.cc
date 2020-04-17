@@ -77,8 +77,15 @@ void Server::handle(const Socket_t &sock) const
   request.http_version = res[2];
   request.print();
   HttpResponse resp;
-  if (request.request_uri.compare("/hello"))
+  if ((!request.method.compare("GET")) && (!request.request_uri.compare("/hello")))
   {
+    HttpResponse resp;
+    resp.http_version = "HTTP/1.1";
+    resp.status_code = 200;
+    resp.reason_phrase = "OK";
+    resp.headers["Connection"] = "close";
+    resp.headers["Content-Length"] = 12;
+    resp.message_body = "Hello CS252!";
     sock->write(resp.to_string());
   }
 
