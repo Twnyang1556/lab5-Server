@@ -24,3 +24,8 @@ Your branch is up to date with 'origin/master'.
 [master e4472f9] Commit at 12:08:59 AM
  1 file changed, 5 insertions(+)
 o publish your local commits)
+[master a5fc667] Commit at 12:09:00 AM
+ 1 file changed, 3 insertions(+)
+M	.local.git.out
+Your branch is ahead of 'origin/master' by 1 commit.
+  (use "git push" to publish your local commits)
