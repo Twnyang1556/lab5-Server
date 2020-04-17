@@ -67,15 +67,10 @@ void Server::handle(const Socket_t &sock) const
     /* code */
     res.push_back(input);
   }
-  for (int i = 0; i < res.size(); i++)
-  {
-    /* code */
-    sock->write(res[i] + "\r\n");
-  }
   request.method = res[0];
   request.request_uri = res[1];
   request.http_version = res[2];
-  request.print();
+
   HttpResponse resp;
   if ((!request.method.compare("GET")) && (!request.request_uri.compare("/hello")))
   {
@@ -92,13 +87,13 @@ void Server::handle(const Socket_t &sock) const
   {
     resp.http_version = res[2];
     resp.status_code = 200;
-    resp.message_body = "Hello CS252!";
+    resp.message_body = "Sub string cuz i dont know how to do this.";
     resp.headers["Connection"] = "close";
     resp.headers["Content-Length"] = resp.message_body.length();
-    request.message_body = "Hello CS 252!";
+    request.message_body = "MMMMMMMMM";
     sock->write(resp.to_string());
   }
-
+  request.print();
   // TODO: Make a response for the HTTP request
   resp.http_version = "HTTP/1.1";
   std::cout << resp.to_string() << std::endl;

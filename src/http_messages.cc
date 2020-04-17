@@ -17,7 +17,7 @@ std::string HttpResponse::to_string() const
     // Look at RFC 2616 Section 6 for details on how a response message looks:
     // https://tools.ietf.org/html/rfc2616#section-6
     std::string s;
-    if (reason_phrase == "")
+    if (reason_phrase != "OK")
     {
         auto it = default_status_reasons.find(status_code);
         s = it->second;
@@ -26,7 +26,7 @@ std::string HttpResponse::to_string() const
     ss << "Headers:\r\n";
     for (auto kvp = headers.begin(); kvp != headers.end(); kvp++)
     {
-        ss << "field-name: " << kvp->first << "; field-value: " << kvp->second;
+        ss << "field-name: " << kvp->first << "; field-value: " << kvp->second << "\r\n";
     }
     ss << "Connection: close\r\n";
     ss << "Content-Length: 12\r\n";
