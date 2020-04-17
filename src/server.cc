@@ -79,13 +79,13 @@ void Server::handle(const Socket_t &sock) const
   HttpResponse resp;
   if ((!request.method.compare("GET")) && (!request.request_uri.compare("/hello")))
   {
-    HttpResponse resp;
     resp.http_version = "HTTP/1.1";
     resp.status_code = 200;
     resp.reason_phrase = "OK";
-    resp.headers["Connection"] = "close";
-    resp.headers["Content-Length"] = 12;
     resp.message_body = "Hello CS252!";
+    resp.headers["Connection"] = "close";
+    resp.headers["Content-Length"] = resp.message_body.length();
+    request.message_body = "Hello CS 252!";
     sock->write(resp.to_string());
   }
 

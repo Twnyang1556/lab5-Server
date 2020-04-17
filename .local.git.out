@@ -56,3 +56,9 @@ Your branch is up to date with 'origin/master'.
 M	.local.git.out
 M	upload.sh
 Your branch is up to date with 'origin/master'.
+[master 66862e9] Commit at  1:54:58 PM
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+M	.local.git.out
+M	src/server.cc
+Your branch is behind 'origin/master' by 1 commit, and can be fast-forwarded.
+  (use "git pull" to update your local branch)
