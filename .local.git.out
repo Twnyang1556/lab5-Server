@@ -21,3 +21,6 @@ Your branch is up to date with 'origin/master'.
  rewrite include/server.hh (86%)
 M	.local.git.out
 Your branch is up to date with 'origin/master'.
+[master e4472f9] Commit at 12:08:59 AM
+ 1 file changed, 5 insertions(+)
+o publish your local commits)
