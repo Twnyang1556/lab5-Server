@@ -29,7 +29,7 @@ std::string HttpResponse::to_string() const
         ss << "field-name: " << kvp->first << "; field-value: " << kvp->second << "\r\n";
     }
     ss << "Connection: close\r\n";
-    ss << "Content-Length: 12\r\n";
+    ss << "Content-Length: " << message_body.length() + "\r\n";
     ss << "\r\n";
     ss << message_body << "\r\n";
     return ss.str();
