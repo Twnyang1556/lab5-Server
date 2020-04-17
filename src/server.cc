@@ -88,6 +88,16 @@ void Server::handle(const Socket_t &sock) const
     request.message_body = "Hello CS 252!";
     sock->write(resp.to_string());
   }
+  else
+  {
+    resp.http_version = res[2];
+    resp.status_code = 200;
+    resp.message_body = "Hello CS252!";
+    resp.headers["Connection"] = "close";
+    resp.headers["Content-Length"] = resp.message_body.length();
+    request.message_body = "Hello CS 252!";
+    sock->write(resp.to_string());
+  }
 
   // TODO: Make a response for the HTTP request
   resp.http_version = "HTTP/1.1";
