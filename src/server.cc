@@ -74,7 +74,7 @@ void Server::handle(const Socket_t &sock) const
   HttpResponse resp;
   if ((!request.method.compare("GET")) && (!request.request_uri.compare("/hello")))
   {
-    resp.http_version = "HTTP/1.1";
+    resp.http_version = res[2];
     resp.status_code = 200;
     resp.reason_phrase = "OK";
     resp.message_body = "Hello CS252!";
@@ -94,8 +94,6 @@ void Server::handle(const Socket_t &sock) const
     sock->write(resp.to_string());
   }
   request.print();
-  // TODO: Make a response for the HTTP request
-  resp.http_version = "HTTP/1.1";
   std::cout << resp.to_string() << std::endl;
 }
 
