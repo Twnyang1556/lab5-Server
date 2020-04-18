@@ -1,4 +1,5 @@
 #include "http_messages.hh"
+#include <string.h>
 
 // You may find this map helpful. You can implement HttpResponse::to_string() such that
 // if no reason_phrase is set, then you try looking up a default_status_reason in this
@@ -17,20 +18,24 @@ std::string HttpResponse::to_string() const
     // Look at RFC 2616 Section 6 for details on how a response message looks:
     // https://tools.ietf.org/html/rfc2616#section-6
     std::string s;
-    if (reason_phrase != "OK")
+    ss << http_version << " " << status_code;
+    auto it = default_status_reasons.find(status_code);
+    if (it == default_status_reasons.end())
     {
-        auto it = default_status_reasons.find(status_code);
+        s = "UNKOWN";
+    }
+    else
+    {
         s = it->second;
     }
-    ss << http_version << " " << status_code + " " << s + "\r\n";
+
+    ss << " " << s + "\r\n";
     ss << "Headers:\r\n";
     for (auto kvp = headers.begin(); kvp != headers.end(); kvp++)
     {
         ss << kvp->first << ": " + kvp->second << "\r\n";
     }
-    // ss << "Connection: close\r\n";
-    // ss << "Content-Length: " << message_body.length() + "\r\n";
-    // ss << "\r\n";
+
     ss << message_body << "\r\n";
     return ss.str();
 }

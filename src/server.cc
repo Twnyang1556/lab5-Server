@@ -9,6 +9,8 @@
 #include <sstream>
 #include <vector>
 #include <tuple>
+#include <sys/types.h>
+#include <unistd.h>
 
 #include "server.hh"
 #include "http_messages.hh"
@@ -30,6 +32,15 @@ void Server::run_linear() const
 void Server::run_fork() const
 {
   // TODO: Task 1.4
+  int pid = fork();
+  if (pid == 0)
+  {
+    while (1)
+    {
+      Socket_t sock = _acceptor.accept_connection();
+      handle(sock);
+    }
+  }
 }
 
 void Server::run_thread() const

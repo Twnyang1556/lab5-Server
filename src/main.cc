@@ -15,28 +15,34 @@
 #include "tcp.hh"
 #include "tls.hh"
 
-enum concurrency_mode {
+enum concurrency_mode
+{
     E_NO_CONCURRENCY = 0,
     E_FORK_PER_REQUEST = 'f',
     E_THREAD_PER_REQUEST = 't',
     E_THREAD_POOL = 'p'
 };
 
-extern "C" void signal_handler(int signal) {
+extern "C" void signal_handler(int signal)
+{
     exit(0);
 }
 
-int main(int argc, char** argv) {
-    struct rlimit mem_limit = { .rlim_cur = 40960000, .rlim_max = 91280000 };
-    struct rlimit cpu_limit = { .rlim_cur = 300, .rlim_max = 600 };
-    struct rlimit nproc_limit = { .rlim_cur = 50, .rlim_max = 100 };
-    if (setrlimit(RLIMIT_AS, &mem_limit)) {
+int main(int argc, char **argv)
+{
+    struct rlimit mem_limit = {.rlim_cur = 40960000, .rlim_max = 91280000};
+    struct rlimit cpu_limit = {.rlim_cur = 300, .rlim_max = 600};
+    struct rlimit nproc_limit = {.rlim_cur = 50, .rlim_max = 100};
+    if (setrlimit(RLIMIT_AS, &mem_limit))
+    {
         perror("Couldn't set memory limit\n");
     }
-    if (setrlimit(RLIMIT_CPU, &cpu_limit)) {
+    if (setrlimit(RLIMIT_CPU, &cpu_limit))
+    {
         perror("Couldn't set CPU limit\n");
     }
-    if (setrlimit(RLIMIT_NPROC, &nproc_limit)) {
+    if (setrlimit(RLIMIT_NPROC, &nproc_limit))
+    {
         perror("Couldn't set NPROC limit\n");
     }
 
@@ -47,56 +53,69 @@ int main(int argc, char** argv) {
     enum concurrency_mode mode = E_NO_CONCURRENCY;
     char use_https = 0;
     int port_no = 0;
-    int num_threads = 0;  // for use when running in pool of threads mode
+    int num_threads = 0; // for use when running in pool of threads mode
 
     char usage[] = "USAGE: myhttpd [-f|-t|-pNUM_THREADS] [-s] [-h] PORT_NO\n";
 
-    if (argc == 1) {
+    if (argc == 1)
+    {
         fputs(usage, stdout);
         return 0;
     }
 
     int c;
-    while ((c = getopt(argc, argv, "hftp:s")) != -1) {
-        switch (c) {
-            case 'h':
-                fputs(usage, stdout);
-                return 0;
-            case 'f':
-            case 't':
-            case 'p':
-                if (mode != E_NO_CONCURRENCY) {
-                    fputs("Multiple concurrency modes specified\n", stdout);
-                    fputs(usage, stderr);
-                    return -1;
-                }
-                mode = (enum concurrency_mode)c;
-                if (mode == E_THREAD_POOL) {
-                    num_threads = stoi(std::string(optarg));
-                }
-                break;
-            case 's':
-                use_https = 1;
-                break;
-            case '?':
-                if (isprint(optopt)) {
-                    std::cerr << "Unknown option: -" << static_cast<char>(optopt)
-                              << std::endl;
-                } else {
-                    std::cerr << "Unknown option" << std::endl;
-                }
-                // Fall through
-            default:
+    while ((c = getopt(argc, argv, "hftp:s")) != -1)
+    {
+        switch (c)
+        {
+        case 'h':
+            fputs(usage, stdout);
+            return 0;
+        case 'f':
+            mode = E_FORK_PER_REQUEST;
+        case 't':
+            mode = E_THREAD_PER_REQUEST;
+        case 'p':
+            if (mode != E_NO_CONCURRENCY)
+            {
+                fputs("Multiple concurrency modes specified\n", stdout);
                 fputs(usage, stderr);
-                return 1;
+                return -1;
+            }
+            mode = (enum concurrency_mode)c;
+            if (mode == E_THREAD_POOL)
+            {
+                num_threads = stoi(std::string(optarg));
+            }
+            break;
+        case 's':
+            use_https = 1;
+            break;
+        case '?':
+            if (isprint(optopt))
+            {
+                std::cerr << "Unknown option: -" << static_cast<char>(optopt)
+                          << std::endl;
+            }
+            else
+            {
+                std::cerr << "Unknown option" << std::endl;
+            }
+            // Fall through
+        default:
+            fputs(usage, stderr);
+            return 1;
         }
     }
 
-    if (optind > argc) {
+    if (optind > argc)
+    {
         std::cerr << "Extra arguments were specified" << std::endl;
         fputs(usage, stderr);
         return 1;
-    } else if (optind == argc) {
+    }
+    else if (optind == argc)
+    {
         std::cerr << "Port number must be specified" << std::endl;
         return 1;
     }
@@ -104,14 +123,18 @@ int main(int argc, char** argv) {
     port_no = atoi(argv[optind]);
     printf("%d %d %d %d\n", mode, use_https, port_no, num_threads);
 
-    SocketAcceptor* acceptor;
-    if (use_https) {
+    SocketAcceptor *acceptor;
+    if (use_https)
+    {
         acceptor = new TLSSocketAcceptor(port_no);
-    } else {
+    }
+    else
+    {
         acceptor = new TCPSocketAcceptor(port_no);
     }
     Server server(*acceptor);
-    switch (mode) {
+    switch (mode)
+    {
     case E_FORK_PER_REQUEST:
         server.run_fork();
         break;
