@@ -79,7 +79,7 @@ void Server::handle(const Socket_t &sock) const
     resp.reason_phrase = "OK";
     resp.message_body = "Hello CS252!";
     resp.headers["Connection"] = "close";
-    resp.headers["Content-Length"] = resp.message_body.length();
+    resp.headers["Content-Length"] = std::to_string(resp.message_body.length());
     request.message_body = "Hello CS 252!";
     sock->write(resp.to_string());
   }
@@ -89,8 +89,8 @@ void Server::handle(const Socket_t &sock) const
     resp.status_code = 200;
     resp.message_body = "Sub string cuz i dont know how to do this.";
     resp.headers["Connection"] = "close";
-    resp.headers["Content-Length"] = resp.message_body.length();
-    request.message_body = "MMMMMMMMM";
+    resp.headers["Content-Length"] = std::to_string(resp.message_body.length());
+    request.message_body = "Sub string cuz i dont know how to do this.";
     sock->write(resp.to_string());
   }
   request.print();

@@ -104,3 +104,6 @@ Your branch is behind 'origin/master' by 1 commit, and can be fast-forwarded.
 Your branch is up to date with 'origin/master'.
 [master 04b7459] Commit at  3:41:38 AM
  1 file changed, 1 insertion(+)
+M	src/server.cc
+Your branch is behind 'origin/master' by 1 commit, and can be fast-forwarded.
+  (use "git pull" to update your local branch)
