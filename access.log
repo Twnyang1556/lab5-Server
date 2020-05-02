@@ -1,0 +1,16 @@
+Server Name: Maple Tree
+
+Server start time: 2020-05-01 23:54:53
+Client is at: 2004
+2892 ms
+
+GET / 403 5378 ms
+
+GET /favicon.ico 403 98 ms
+
+GET / 403 7787 ms
+
+GET / 403 21615 ms
+
+Server ended at: 2020-05-01 23:55:58
+Uptime is: 65 seconds

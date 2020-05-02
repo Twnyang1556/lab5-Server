@@ -8,4 +8,3 @@ HttpResponse handle_default(const HttpRequest& request) {
   response.status_code = 404;
   return response;
 }
-

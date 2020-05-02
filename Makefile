@@ -16,7 +16,7 @@ GCCFLAGS:=-Wall
 CPPFLAGS:=-iquote$(INCDIR)
 GCCFLAGS:=`pkg-config --cflags openssl` -g
 
-LDLIBS=`pkg-config --libs openssl`
+LDLIBS=`pkg-config --libs openssl` -lpthread -ldl
 
 CFLAGS=$(CPPFLAGS) $(WARNFLAGS) $(GCCFLAGS) --std=gnu11
 CXXFLAGS=$(CPPFLAGS) $(WARNFLAGS) $(GCCFLAGS)  --std=gnu++14
@@ -36,7 +36,7 @@ ALLFILES+=$(foreach cext, $(CEXTS), $(call rwildcard, $(SRCDIR), *.$(cext)))
 ALLFILES+=$(foreach hext, $(HEXTS), $(call rwildcard, $(INCDIR), *.$(hext)))
 ALLFILES:=$(sort $(ALLFILES))
 
-all: git-commit myhttpd
+all: myhttpd
 
 myhttpd: $(call GETALLOBJ)
 	@echo -n "Linking $@ "
